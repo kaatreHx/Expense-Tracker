@@ -8,6 +8,9 @@ import RealtimeIndicator from './RealtimeIndicator'
 import DebugPanel from './DebugPanel'
 import ConfirmDialog from './ConfirmDialog'
 import DatabaseTest from './DatabaseTest'
+import CategoryPieChart from './CategoryPieChart'
+import ExportPreview from './ExportPreview'
+import { exportToExcel, exportCategoryData } from '../utils/excelExport'
 
 const Dashboard = () => {
   const { user, signOut } = useAuth()
@@ -21,6 +24,9 @@ const Dashboard = () => {
   const [connectionStatus, setConnectionStatus] = useState('connecting')
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, transaction: null })
   const [showDatabaseTest, setShowDatabaseTest] = useState(false)
+  const [showCategoryStats, setShowCategoryStats] = useState(true)
+  const [exportLoading, setExportLoading] = useState(false)
+  const [showExportPreview, setShowExportPreview] = useState(false)
 
   useEffect(() => {
     if (!user?.id) {
@@ -93,6 +99,78 @@ const Dashboard = () => {
     setTotalIncome(income)
     setTotalExpenses(expenses)
   }, [transactions])
+
+  // Calculate category-wise statistics
+  const getCategoryStats = () => {
+    const categoryStats = {}
+    
+    transactions.forEach(transaction => {
+      const categoryName = transaction.categories?.name || 'Uncategorized'
+      const categoryColor = transaction.categories?.color || '#6b7280'
+      
+      if (!categoryStats[categoryName]) {
+        categoryStats[categoryName] = {
+          name: categoryName,
+          color: categoryColor,
+          totalAmount: 0,
+          incomeAmount: 0,
+          expenseAmount: 0,
+          transactionCount: 0
+        }
+      }
+      
+      categoryStats[categoryName].totalAmount += transaction.type === 'expense' ? transaction.amount : 0
+      categoryStats[categoryName].incomeAmount += transaction.type === 'income' ? transaction.amount : 0
+      categoryStats[categoryName].expenseAmount += transaction.type === 'expense' ? transaction.amount : 0
+      categoryStats[categoryName].transactionCount += 1
+    })
+    
+    // Convert to array and sort by total expense amount
+    return Object.values(categoryStats)
+      .sort((a, b) => b.expenseAmount - a.expenseAmount)
+      .slice(0, 6) // Show top 6 categories
+  }
+
+  // Get top spending category for quick insight
+  const getTopSpendingCategory = () => {
+    const stats = getCategoryStats()
+    return stats.length > 0 ? stats[0] : null
+  }
+
+  // Handle Excel export
+  const handleExportToExcel = async () => {
+    setExportLoading(true)
+    try {
+      const result = await exportToExcel(transactions, categories, user?.email)
+      if (result.success) {
+        setRealtimeUpdate({ show: true, message: `Exported to ${result.filename}` })
+      } else {
+        alert('Export failed: ' + result.error)
+      }
+    } catch (error) {
+      alert('Export failed: ' + error.message)
+    } finally {
+      setExportLoading(false)
+    }
+  }
+
+  // Handle category data export
+  const handleExportCategoryData = async () => {
+    setExportLoading(true)
+    try {
+      const categoryStats = getCategoryStats()
+      const result = await exportCategoryData(categoryStats, totalExpenses, user?.email)
+      if (result.success) {
+        setRealtimeUpdate({ show: true, message: `Category data exported to ${result.filename}` })
+      } else {
+        alert('Export failed: ' + result.error)
+      }
+    } catch (error) {
+      alert('Export failed: ' + error.message)
+    } finally {
+      setExportLoading(false)
+    }
+  }
 
   const fetchTransactions = async () => {
     try {
@@ -324,6 +402,21 @@ const Dashboard = () => {
               🔄
             </button>
             <button 
+              onClick={handleExportToExcel}
+              disabled={exportLoading || transactions.length === 0}
+              className="export-btn"
+              title="Export all data to Excel"
+            >
+              {exportLoading ? '⏳' : '📊'} Excel
+            </button>
+            <button 
+              onClick={() => setShowExportPreview(true)}
+              className="preview-btn"
+              title="Preview Excel export format"
+            >
+              👁️ Preview
+            </button>
+            <button 
               onClick={() => setShowCategoryManager(true)}
               className="manage-btn"
             >
@@ -357,7 +450,111 @@ const Dashboard = () => {
             <h3>Total Transactions</h3>
             <p className="stat-count">{transactions.length}</p>
           </div>
+          {getTopSpendingCategory() && (
+            <div className="stat-card top-category">
+              <h3>Top Spending</h3>
+              <div className="top-category-info">
+                <div className="category-name-with-dot">
+                  <span 
+                    className="category-color-dot"
+                    style={{ backgroundColor: getTopSpendingCategory().color }}
+                  ></span>
+                  <span className="category-name">{getTopSpendingCategory().name}</span>
+                </div>
+                <p className="stat-amount expense">${getTopSpendingCategory().expenseAmount.toFixed(2)}</p>
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Category Statistics */}
+        {transactions.length > 0 && (
+          <div className="category-stats-section">
+            <div className="category-stats-header">
+              <h2>Spending by Category</h2>
+              <div className="stats-controls">
+                <button 
+                  onClick={handleExportCategoryData}
+                  disabled={exportLoading}
+                  className="export-category-btn"
+                  title="Export category analysis to Excel"
+                >
+                  {exportLoading ? '⏳' : '📈'} Export
+                </button>
+                <button 
+                  onClick={() => setShowCategoryStats(!showCategoryStats)}
+                  className="toggle-stats-btn"
+                  title={showCategoryStats ? 'Hide category stats' : 'Show category stats'}
+                >
+                  {showCategoryStats ? '📊 Hide' : '📊 Show'}
+                </button>
+              </div>
+            </div>
+            
+            {showCategoryStats && (
+              <div className="category-stats-content">
+                {/* Pie Chart Section */}
+                <div className="pie-chart-section">
+                  <h3>Expense Distribution</h3>
+                  <CategoryPieChart 
+                    categoryStats={getCategoryStats()} 
+                    totalExpenses={totalExpenses}
+                  />
+                </div>
+
+                {/* Category Cards Grid */}
+                <div className="category-stats-grid">
+                  {getCategoryStats().map((category, index) => (
+                    <div key={category.name} className="category-stat-card">
+                      <div className="category-stat-header">
+                        <div className="category-info">
+                          <span 
+                            className="category-color-dot"
+                            style={{ backgroundColor: category.color }}
+                          ></span>
+                          <span className="category-name">{category.name}</span>
+                        </div>
+                        <span className="category-rank">#{index + 1}</span>
+                      </div>
+                      
+                      <div className="category-amounts">
+                        {category.expenseAmount > 0 && (
+                          <div className="amount-row expense">
+                            <span className="amount-label">Expenses:</span>
+                            <span className="amount-value">${category.expenseAmount.toFixed(2)}</span>
+                          </div>
+                        )}
+                        {category.incomeAmount > 0 && (
+                          <div className="amount-row income">
+                            <span className="amount-label">Income:</span>
+                            <span className="amount-value">${category.incomeAmount.toFixed(2)}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="category-meta">
+                        <span className="transaction-count">
+                          {category.transactionCount} transaction{category.transactionCount !== 1 ? 's' : ''}
+                        </span>
+                        {totalExpenses > 0 && category.expenseAmount > 0 && (
+                          <span className="expense-percentage">
+                            {((category.expenseAmount / totalExpenses) * 100).toFixed(1)}% of expenses
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {getCategoryStats().length === 0 && (
+              <div className="empty-category-stats">
+                <p>No category data available. Add some transactions to see category breakdown!</p>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="dashboard-content">
           <div className="expense-form-section">
@@ -443,6 +640,11 @@ const Dashboard = () => {
           <DatabaseTest />
         </div>
       )}
+
+      <ExportPreview 
+        isOpen={showExportPreview}
+        onClose={() => setShowExportPreview(false)}
+      />
     </div>
   )
 }
