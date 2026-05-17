@@ -116,7 +116,7 @@ const ExpenseList = ({ expenses, onDeleteExpense, categories }) => {
                       {expense.type === 'income' ? '↗' : '↙'} {expense.type}
                     </span>
                     <span className={`expense-amount ${expense.type}`}>
-                      {expense.type === 'income' ? '+' : '-'}${expense.amount.toFixed(2)}
+                      {expense.type === 'income' ? '+' : '-'}NPR {expense.amount.toFixed(2)}
                     </span>
                   </div>
                 </div>
