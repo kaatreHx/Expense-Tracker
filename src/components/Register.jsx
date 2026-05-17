@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -9,8 +9,26 @@ const Register = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('darkMode')
+    return saved ? JSON.parse(saved) : false
+  })
   const { signUp } = useAuth()
   const navigate = useNavigate()
+
+  // Apply dark mode class to body
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode')
+    } else {
+      document.body.classList.remove('dark-mode')
+    }
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -54,6 +72,21 @@ const Register = () => {
 
   return (
     <div className="auth-container">
+      <button 
+        onClick={toggleDarkMode}
+        className="dark-mode-toggle"
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          zIndex: 1000
+        }}
+        title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        <span className="icon">
+          {isDarkMode ? '☀️' : '🌙'}
+        </span>
+      </button>
       <div className="auth-card">
         <h2>Create Account</h2>
         {error && <div className="error-message">{error}</div>}
