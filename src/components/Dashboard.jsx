@@ -27,6 +27,26 @@ const Dashboard = () => {
   const [showCategoryStats, setShowCategoryStats] = useState(true)
   const [exportLoading, setExportLoading] = useState(false)
   const [showExportPreview, setShowExportPreview] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage for saved preference or default to false
+    const saved = localStorage.getItem('darkMode')
+    return saved ? JSON.parse(saved) : false
+  })
+
+  // Apply dark mode class to body
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode')
+    } else {
+      document.body.classList.remove('dark-mode')
+    }
+    // Save preference to localStorage
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
 
   useEffect(() => {
     if (!user?.id) {
@@ -384,6 +404,15 @@ const Dashboard = () => {
                  connectionStatus === 'connecting' ? 'Connecting...' : 'Offline'}
               </span>
             </div>
+            <button 
+              onClick={toggleDarkMode}
+              className="dark-mode-toggle"
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              <span className="icon">
+                {isDarkMode ? '☀️' : '🌙'}
+              </span>
+            </button>
             <button 
               onClick={() => setShowDatabaseTest(true)}
               className="test-btn"
