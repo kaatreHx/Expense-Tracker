@@ -1,6 +1,6 @@
 # 💰 Expense Tracker - Real-time Personal Finance Manager
 
-A modern, real-time expense tracking application built with React, Vite, and Supabase. Track your income and expenses with beautiful visualizations, custom categories, and instant synchronization across devices.
+A modern, real-time expense tracking application built with React, Vite, and Supabase. Track your income and expenses in Nepalese Rupees (NPR) with beautiful visualizations, custom categories, and instant synchronization across devices.
 
 ![Expense Tracker](https://img.shields.io/badge/React-19.2.5-blue)
 ![Vite](https://img.shields.io/badge/Vite-8.0.10-green)
