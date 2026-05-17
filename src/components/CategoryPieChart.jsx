@@ -25,7 +25,7 @@ const CategoryPieChart = ({ categoryStats, totalExpenses }) => {
             <span className="tooltip-category">{data.name}</span>
           </div>
           <div className="tooltip-content">
-            <p className="tooltip-amount">${data.value.toFixed(2)}</p>
+            <p className="tooltip-amount">NPR {data.value.toFixed(2)}</p>
             <p className="tooltip-percentage">{data.percentage}% of expenses</p>
           </div>
         </div>
