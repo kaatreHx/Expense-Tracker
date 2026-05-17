@@ -434,16 +434,16 @@ const Dashboard = () => {
         <div className="dashboard-stats">
           <div className="stat-card income">
             <h3>Total Income</h3>
-            <p className="stat-amount income">${totalIncome.toFixed(2)}</p>
+            <p className="stat-amount income">NPR {totalIncome.toFixed(2)}</p>
           </div>
           <div className="stat-card expense">
             <h3>Total Expenses</h3>
-            <p className="stat-amount expense">${totalExpenses.toFixed(2)}</p>
+            <p className="stat-amount expense">NPR {totalExpenses.toFixed(2)}</p>
           </div>
           <div className="stat-card balance">
             <h3>Net Balance</h3>
             <p className={`stat-amount ${totalIncome - totalExpenses >= 0 ? 'positive' : 'negative'}`}>
-              ${(totalIncome - totalExpenses).toFixed(2)}
+              NPR {(totalIncome - totalExpenses).toFixed(2)}
             </p>
           </div>
           <div className="stat-card">
@@ -461,7 +461,7 @@ const Dashboard = () => {
                   ></span>
                   <span className="category-name">{getTopSpendingCategory().name}</span>
                 </div>
-                <p className="stat-amount expense">${getTopSpendingCategory().expenseAmount.toFixed(2)}</p>
+                <p className="stat-amount expense">NPR {getTopSpendingCategory().expenseAmount.toFixed(2)}</p>
               </div>
             </div>
           )}
@@ -521,13 +521,13 @@ const Dashboard = () => {
                         {category.expenseAmount > 0 && (
                           <div className="amount-row expense">
                             <span className="amount-label">Expenses:</span>
-                            <span className="amount-value">${category.expenseAmount.toFixed(2)}</span>
+                            <span className="amount-value">NPR {category.expenseAmount.toFixed(2)}</span>
                           </div>
                         )}
                         {category.incomeAmount > 0 && (
                           <div className="amount-row income">
                             <span className="amount-label">Income:</span>
-                            <span className="amount-value">${category.incomeAmount.toFixed(2)}</span>
+                            <span className="amount-value">NPR {category.incomeAmount.toFixed(2)}</span>
                           </div>
                         )}
                       </div>
