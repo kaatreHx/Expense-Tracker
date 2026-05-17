@@ -10,6 +10,295 @@ body {
   background-color: #f5f7fa;
   color: #333;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+body.dark-mode .dashboard {
+  background-color: #1a1a1a;
+}
+
+body.dark-mode .dashboard-header {
+  background: #2d2d2d;
+  border-bottom: 1px solid #404040;
+}
+
+body.dark-mode .dashboard-header h1 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .user-info span {
+  color: #b0b0b0;
+}
+
+body.dark-mode .stat-card {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .stat-card h3 {
+  color: #b0b0b0;
+}
+
+body.dark-mode .expense-form-section,
+body.dark-mode .expense-list-section {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .expense-form-section h2,
+body.dark-mode .expense-list-section h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+  background: #404040;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group select:focus,
+body.dark-mode .form-group textarea:focus {
+  border-color: #667eea;
+}
+
+body.dark-mode .form-group label {
+  color: #b0b0b0;
+}
+
+body.dark-mode .expense-item {
+  background: #404040;
+  border-left-color: #667eea;
+}
+
+body.dark-mode .expense-item.income {
+  background: #1a2e1a;
+  border-left-color: #28a745;
+}
+
+body.dark-mode .expense-item.expense {
+  background: #2e1a1a;
+  border-left-color: #dc3545;
+}
+
+body.dark-mode .expense-title {
+  color: #e0e0e0;
+}
+
+body.dark-mode .expense-date {
+  color: #b0b0b0;
+}
+
+body.dark-mode .filter-group select,
+body.dark-mode .sort-group select {
+  background: #404040;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .filter-group label,
+body.dark-mode .sort-group label {
+  color: #b0b0b0;
+}
+
+body.dark-mode .list-summary {
+  border-top-color: #404040;
+  color: #b0b0b0;
+}
+
+body.dark-mode .empty-state {
+  color: #b0b0b0;
+}
+
+body.dark-mode .modal-content {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: #404040;
+}
+
+body.dark-mode .modal-header h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .manager-section {
+  border-color: #404040;
+}
+
+body.dark-mode .manager-section h3 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .add-form input,
+body.dark-mode .add-form select {
+  background: #404040;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .item {
+  background: #404040;
+  border-color: #555;
+}
+
+body.dark-mode .item:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode .category-name {
+  color: #e0e0e0;
+}
+
+body.dark-mode .usage-count {
+  color: #b0b0b0;
+}
+
+body.dark-mode .edit-form {
+  background: #404040;
+  border-color: #555;
+}
+
+body.dark-mode .edit-form h4 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .category-stats-section {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .category-stats-section h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .category-stat-card {
+  background: #404040;
+  border-color: #555;
+}
+
+body.dark-mode .category-stat-card:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode .pie-chart-section {
+  background: #404040;
+  border-color: #555;
+}
+
+body.dark-mode .pie-chart-section h3 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .pie-tooltip {
+  background: #2d2d2d;
+  border-color: #555;
+}
+
+body.dark-mode .tooltip-category {
+  color: #e0e0e0;
+}
+
+body.dark-mode .tooltip-percentage {
+  color: #b0b0b0;
+}
+
+body.dark-mode .confirm-dialog {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .confirm-header {
+  border-bottom-color: #404040;
+}
+
+body.dark-mode .confirm-header h3 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .confirm-body p {
+  color: #b0b0b0;
+}
+
+body.dark-mode .confirm-btn.cancel {
+  background: #404040;
+  color: #b0b0b0;
+  border-color: #555;
+}
+
+body.dark-mode .confirm-btn.cancel:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode .export-preview-modal {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .preview-sheet h4 {
+  background: #404040;
+  border-bottom-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .sheet-preview th {
+  background: #404040;
+  color: #e0e0e0;
+}
+
+body.dark-mode .sheet-preview td {
+  color: #b0b0b0;
+}
+
+body.dark-mode .sheet-preview th,
+body.dark-mode .sheet-preview td {
+  border-bottom-color: #555;
+}
+
+body.dark-mode .export-features {
+  background: #404040;
+  border-color: #555;
+}
+
+body.dark-mode .export-features h4 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .export-features li {
+  color: #b0b0b0;
+}
+
+body.dark-mode .auth-card {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+body.dark-mode .auth-card h2 {
+  color: #e0e0e0;
+}
+
+body.dark-mode .auth-link {
+  color: #b0b0b0;
+}
+
+body.dark-mode .toggle-stats-btn {
+  background: #404040;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.dark-mode .toggle-stats-btn:hover {
+  background: #4a4a4a;
+  border-color: #666;
 }
 
 .app {
@@ -1641,6 +1930,52 @@ body {
     padding: 0.25rem;
   }
 }
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+  border-color: #adb5bd;
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
+}
+
+body.dark-mode .dark-mode-toggle {
+  background: #404040;
+  border-color: #666;
+  color: #ffd700;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+  background: #4a4a4a;
+  border-color: #777;
+}
+
+/* Animation for mode switch */
+.dark-mode-toggle .icon {
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover .icon {
+  transform: rotate(180deg);
+}
+
 /* Preview Button */
 .preview-btn {
   background: #6f42c1;
